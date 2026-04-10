@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect, useCallback } from 'react';
 
 export default function CoursePlayer({ courseId, token, user, goBack }: { courseId: string, token: string, user: any, goBack: () => void }) {
