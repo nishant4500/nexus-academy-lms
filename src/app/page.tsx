@@ -12,7 +12,7 @@ export default function Home() {
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
 
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState<any[]>([]);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
