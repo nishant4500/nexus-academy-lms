@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id           String       @id @default(uuid())
+  name         String?
+  email        String       @unique
+  passwordHash String
+  role         String       @default("STUDENT") // STUDENT, INSTRUCTOR, ADMIN
+  courses      Course[]     @relation("InstructorCourses")
+  enrollments  Enrollment[]
+  quizAttempts QuizAttempt[]
+  certificates Certificate[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model Course {
+  id          String       @id @default(uuid())
+  title       String
+  description String?
+  instructorId String
+  instructor  User         @relation("InstructorCourses", fields: [instructorId], references: [id])
+  modules     Module[]
+  enrollments Enrollment[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Module {
+  id        String     @id @default(uuid())
+  title     String
+  content   String?    // text content or resource links
+  videoUrl  String?    // US-05
+  courseId  String
+  course    Course     @relation(fields: [courseId], references: [id])
+  resources Resource[]
+  quiz      Quiz?      
+  progresses Progress[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Resource {
+  id        String   @id @default(uuid())
+  title     String
+  url       String
+  moduleId  String
+  module    Module   @relation(fields: [moduleId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Enrollment {
+  id        String   @id @default(uuid())
+  studentId String
+  courseId  String
+  student   User     @relation(fields: [studentId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
+  progress  Float    @default(0.0) // Percentage
+  createdAt DateTime @default(now())
+
+  @@unique([studentId, courseId])
+}
+
+model Progress {
+  id        String   @id @default(uuid())
+  studentId String
+  moduleId  String
+  completed Boolean  @default(false)
+  module    Module   @relation(fields: [moduleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, moduleId])
+}
+
+model Quiz {
+  id        String     @id @default(uuid())
+  title     String
+  moduleId  String     @unique
+  module    Module     @relation(fields: [moduleId], references: [id])
+  questions Question[]
+  attempts  QuizAttempt[]
+}
+
+model Question {
+  id            String   @id @default(uuid())
+  quizId        String
+  quiz          Quiz     @relation(fields: [quizId], references: [id])
+  text          String
+  options       Option[]
+}
+
+model Option {
+  id         String   @id @default(uuid())
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+  text       String
+  isCorrect  Boolean  @default(false)
+}
+
+model QuizAttempt {
+  id        String   @id @default(uuid())
+  studentId String
+  quizId    String
+  score     Float    
+  student   User     @relation(fields: [studentId], references: [id])
+  quiz      Quiz     @relation(fields: [quizId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Certificate {
+  id        String   @id @default(uuid())
+  studentId String
+  courseId  String
+  url       String?
+  student   User     @relation(fields: [studentId], references: [id])
+  issuedAt  DateTime @default(now())
+  
+  @@unique([studentId, courseId])
+}
