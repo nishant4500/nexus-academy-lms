@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import 'swagger-ui-react/swagger-ui.css';
 
 // Dynamically import Swagger to avoid SSR issues
