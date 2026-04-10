@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "npx prisma generate && next build",
-    "start": "npx prisma db push --accept-data-loss && node seed.js && next start",
+    "start": "npx prisma generate && npx prisma db push --accept-data-loss && node seed.js && next start",
     "lint": "eslint"
   },
   "dependencies": {
