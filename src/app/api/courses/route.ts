@@ -2,13 +2,13 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getTokenPayload, checkRole } from '@/lib/auth';
 
-export async function GET(req: Request) {
+export async function GET(_req: Request) {
   try {
     const courses = await prisma.course.findMany({
       include: { instructor: { select: { name: true, email: true } } },
     });
     return NextResponse.json(courses);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

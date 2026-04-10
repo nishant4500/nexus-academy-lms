@@ -28,9 +28,9 @@ export async function GET(req: Request, { params }: { params: Promise<{ courseId
             completedCount, 
             total, 
             completionRate: Math.round(completionRate * 100), 
-            completedModules: progresses.map((p: any) => p.moduleId) 
+            completedModules: progresses.map((p) => p.moduleId) 
         });
-    } catch(err) {
+    } catch (_err) {
         return NextResponse.json({ error: 'Internal Error' }, { status: 500 });
     }
 }

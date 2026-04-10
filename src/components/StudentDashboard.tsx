@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import CoursePlayer from './CoursePlayer';
 
-export default function StudentDashboard({ token, user, courses, fetchCourses }: any) {
+interface Props {
+  token: string;
+  user: { id: string, email: string, role: string };
+  courses: any[];
+  fetchCourses: () => void;
+}
+
+export default function StudentDashboard({ token, user, courses }: Props) {
   const [playingCourseId, setPlayingCourseId] = useState<string | null>(null);
 
   if (playingCourseId) {

@@ -19,7 +19,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     });
     if (!course) return NextResponse.json({ error: 'Not found' }, { status: 404 });
     return NextResponse.json(course);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -38,7 +38,7 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
 
     await prisma.course.delete({ where: { id } });
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

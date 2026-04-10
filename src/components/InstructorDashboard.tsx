@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 
-export default function InstructorDashboard({ token, user, courses, fetchCourses }: any) {
+interface Props {
+  token: string;
+  user: { id: string, email: string, role: string };
+  courses: any[];
+  fetchCourses: () => void;
+}
+
+export default function InstructorDashboard({ token, user, courses, fetchCourses }: Props) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
@@ -15,7 +22,7 @@ export default function InstructorDashboard({ token, user, courses, fetchCourses
   const [opt1, setOpt1] = useState('');
   const [opt2, setOpt2] = useState('');
 
-  const createCourse = async (e: any) => {
+  const createCourse = async (e: React.FormEvent) => {
     e.preventDefault();
     await fetch('/api/courses', {
       method: 'POST',
@@ -26,7 +33,7 @@ export default function InstructorDashboard({ token, user, courses, fetchCourses
     setTitle(''); setDescription('');
   };
 
-  const createModule = async (e: any) => {
+  const createModule = async (e: React.FormEvent) => {
     e.preventDefault();
     await fetch('/api/modules', {
         method: 'POST',

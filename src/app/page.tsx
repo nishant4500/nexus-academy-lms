@@ -1,12 +1,10 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import InstructorDashboard from '@/components/InstructorDashboard';
 import StudentDashboard from '@/components/StudentDashboard';
 
 export default function Home() {
   const [token, setToken] = useState('');
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<{ id: string, email: string, role: string } | null>(null);
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,13 +30,14 @@ export default function Home() {
     } else alert(data.error);
   };
 
-  const fetchCourses = async () => {
+  const fetchCourses = useCallback(async () => {
+    if (!token) return;
     const res = await fetch('/api/courses', { headers: { Authorization: `Bearer ${token}` } });
     const d = await res.json();
     if(Array.isArray(d)) setCourses(d);
-  };
+  }, [token]);
 
-  useEffect(() => { if (token) fetchCourses(); }, [token]);
+  useEffect(() => { if (token) fetchCourses(); }, [token, fetchCourses]);
 
   if (!token) {
     return (

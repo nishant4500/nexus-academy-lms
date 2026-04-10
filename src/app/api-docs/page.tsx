@@ -121,7 +121,7 @@ export default function ApiDocs() {
       <h1 style={{ textAlign: 'center', marginBottom: '20px', color: '#333' }}>Nexus Academy Swagger Documentation</h1>
       <SwaggerUI spec={spec} />
       <div style={{ textAlign: 'center', marginTop: '40px' }}>
-         <a href="/" style={{ color: 'blue', textDecoration: 'underline' }}>← Back to Application</a>
+         <Link href="/" style={{ color: 'blue', textDecoration: 'underline' }}>← Back to Application</Link>
       </div>
     </div>
   );

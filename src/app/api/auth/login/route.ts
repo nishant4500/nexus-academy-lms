@@ -24,8 +24,7 @@ export async function POST(req: Request) {
     const token = signToken({ id: user.id, role: user.role });
 
     return NextResponse.json({ user: { id: user.id, email: user.email, role: user.role }, token }, { status: 200 });
-  } catch (error) {
-    console.error(error);
+  } catch (_error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
-export default function CoursePlayer({ courseId, token, user, goBack }: any) {
+export default function CoursePlayer({ courseId, token, user, goBack }: { courseId: string, token: string, user: any, goBack: () => void }) {
    const [course, setCourse] = useState<any>(null);
    const [certData, setCertData] = useState<any>(null);
    
-   const [quizScores, setQuizScores] = useState<any>({});
-   const [quizAnswers, setQuizAnswers] = useState<any>({});
+   const [quizScores, setQuizScores] = useState<Record<string, number>>({});
+   const [quizAnswers, setQuizAnswers] = useState<Record<string, any>>({});
    
    const [progressData, setProgressData] = useState<any>({ completedCount: 0, total: 0, completionRate: 0, completedModules: [] });
 
-   const loadCourseAndProgress = async () => {
+   const loadCourseAndProgress = useCallback(async () => {
        const res = await fetch(`/api/courses/${courseId}`);
        setCourse(await res.json());
 
@@ -17,9 +17,9 @@ export default function CoursePlayer({ courseId, token, user, goBack }: any) {
            const progRes = await fetch(`/api/progress/${courseId}`, { headers: { Authorization: `Bearer ${token}` } });
            setProgressData(await progRes.json());
        }
-   };
+   }, [courseId, token, user.role]);
 
-   useEffect(() => { loadCourseAndProgress(); }, []);
+   useEffect(() => { loadCourseAndProgress(); }, [loadCourseAndProgress]);
 
    const enroll = async () => {
     const res = await fetch('/api/enrollments', {
