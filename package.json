@@ -5,14 +5,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "npx prisma generate && next build",
-    "start": "npx prisma generate && npx prisma db push --accept-data-loss && node seed.js && next start",
-    "lint": "eslint"
+    "start": "npx prisma db push --accept-data-loss && node seed.js && next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
     "bcryptjs": "^3.0.3",
     "jsonwebtoken": "^9.0.3",
-    "next": "16.2.3",
+    "next": "15.1.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "swagger-ui-react": "^5.32.2"
