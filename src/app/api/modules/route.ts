@@ -15,12 +15,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unauthorized to add module to this course' }, { status: 403 });
     }
 
-    const module = await prisma.module.create({
+    const newModule = await prisma.module.create({
       data: { title, content, videoUrl, courseId }
     });
 
-    return NextResponse.json(module, { status: 201 });
-  } catch (error) {
+    return NextResponse.json(newModule, { status: 201 });
+  } catch (_error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

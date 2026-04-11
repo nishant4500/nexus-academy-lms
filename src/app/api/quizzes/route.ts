@@ -15,10 +15,10 @@ export async function POST(req: Request) {
         title,
         moduleId,
         questions: {
-          create: questions.map((q: any) => ({
+          create: questions.map((q: { text: string, options: Array<{ text: string, isCorrect: boolean }> }) => ({
             text: q.text,
             options: {
-              create: q.options.map((o: any) => ({
+              create: q.options.map((o: { text: string, isCorrect: boolean }) => ({
                 text: o.text,
                 isCorrect: o.isCorrect
               }))
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(quiz, { status: 201 });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

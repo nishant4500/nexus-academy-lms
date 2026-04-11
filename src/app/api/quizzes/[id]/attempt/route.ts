@@ -19,7 +19,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     let score = 0;
     const totalQuestions = quiz.questions.length;
 
-    answers.forEach((ans: any) => {
+    answers.forEach((ans: { questionId: string, optionId: string }) => {
       const question = quiz.questions.find(q => q.id === ans.questionId);
       if (question) {
         const selectedOption = question.options.find(o => o.id === ans.optionId);
@@ -40,7 +40,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     });
 
     return NextResponse.json({ attempt, correct: score, total: totalQuestions }, { status: 201 });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

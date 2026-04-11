@@ -2,14 +2,14 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_jwt_key_for_testing';
 
-export function signToken(payload: any) {
+export function signToken(payload: Record<string, unknown>) {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' });
 }
 
 export function verifyToken(token: string) {
   try {
-    return jwt.verify(token, JWT_SECRET) as any;
-  } catch (err) {
+    return jwt.verify(token, JWT_SECRET) as { id: string, email: string, role: string };
+  } catch (_err) {
     return null;
   }
 }
@@ -23,7 +23,7 @@ export function getTokenPayload(req: Request) {
   return null;
 }
 
-export function checkRole(user: any, allowedRoles: string[]) {
+export function checkRole(user: { role: string } | null, allowedRoles: string[]) {
   if (!user) return false;
   // ADMIN can do everything
   if (user.role === 'ADMIN') return true;

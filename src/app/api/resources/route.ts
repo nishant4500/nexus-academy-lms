@@ -10,8 +10,8 @@ export async function POST(req: Request) {
     const { title, url, moduleId } = await req.json();
     if (!title || !url || !moduleId) return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
 
-    const module = await prisma.module.findUnique({ where: { id: moduleId }, include: { course: true } });
-    if (!module || (module.course.instructorId !== user.id && user.role !== 'ADMIN')) {
+    const parentModule = await prisma.module.findUnique({ where: { id: moduleId }, include: { course: true } });
+    if (!parentModule || (parentModule.course.instructorId !== user.id && user.role !== 'ADMIN')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(resource, { status: 201 });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

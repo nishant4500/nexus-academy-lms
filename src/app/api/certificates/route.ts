@@ -46,7 +46,7 @@ export async function POST(req: Request) {
         studentName: studentRecord?.name || user.email,
         date: new Date().toLocaleDateString()
     }, { status: 201 });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
